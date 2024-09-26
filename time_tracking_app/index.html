@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>Welcome, {{ current_user.username }}!</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('start_session') }}">Start Work Session</a>
+    {% for session in current_user.work_sessions %}
+        <p>{{ session.start_time }} - {{ session.end_time or 'In Progress' }}</p>
+        {% if not session.end_time %}
+            <a href="{{ url_for('end_session', session_id=session.id) }}">End Session</a>
+        {% endif %}
+    {% endfor %}
+    <h2>Recent Activities</h2>
+    {% for activity in current_user.activities %}
+        <p>{{ activity.timestamp }} - {{ activity.active_window }}</p>
+        <img src="{{ activity.screenshot }}" alt="Screenshot" width="200">
+    {% endfor %}
+</body>
+</html>
